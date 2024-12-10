@@ -9,7 +9,6 @@
 /.github/workflows/pull-request-lint.yml linguist-generated
 /.github/workflows/release.yml linguist-generated
 /.gitignore linguist-generated
-/.mergify.yml linguist-generated
 /.npmignore linguist-generated
 /.npmrc linguist-generated
 /.prettierignore linguist-generated
@@ -21,5 +20,6 @@
 /LICENSE linguist-generated
 /package.json linguist-generated
 /pnpm-lock.yaml linguist-generated
+/pnpm-workspace.yaml linguist-generated
 /tsconfig.dev.json linguist-generated
 /tsconfig.json linguist-generated

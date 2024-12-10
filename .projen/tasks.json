@@ -79,7 +79,7 @@
       "description": "Only compile",
       "steps": [
         {
-          "exec": "tsc --build"
+          "exec": "pnpm -r build"
         }
       ]
     },
@@ -89,6 +89,16 @@
       "steps": [
         {
           "exec": "ts-node --project tsconfig.dev.json .projenrc.ts"
+        }
+      ]
+    },
+    "deploy": {
+      "name": "deploy",
+      "steps": [
+        {
+          "exec": "npx aws-cdk deploy cde-platform",
+          "cwd": "packages/infra",
+          "receiveArgs": true
         }
       ]
     },
@@ -137,15 +147,7 @@
     },
     "package": {
       "name": "package",
-      "description": "Creates the distribution package",
-      "steps": [
-        {
-          "exec": "mkdir -p dist/js"
-        },
-        {
-          "exec": "pnpm pack --pack-destination dist/js"
-        }
-      ]
+      "description": "Creates the distribution package"
     },
     "post-compile": {
       "name": "post-compile",
@@ -179,25 +181,22 @@
         }
       ]
     },
+    "synth": {
+      "name": "synth",
+      "steps": [
+        {
+          "exec": "npx aws-cdk synth",
+          "cwd": "packages/infra",
+          "receiveArgs": true
+        }
+      ]
+    },
     "test": {
       "name": "test",
       "description": "Run tests",
       "steps": [
         {
-          "exec": "jest --passWithNoTests --updateSnapshot",
-          "receiveArgs": true
-        },
-        {
           "spawn": "eslint"
-        }
-      ]
-    },
-    "test:watch": {
-      "name": "test:watch",
-      "description": "Run jest in watch mode",
-      "steps": [
-        {
-          "exec": "jest --watch"
         }
       ]
     },
