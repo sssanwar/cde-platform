@@ -1,0 +1,7 @@
+{
+  "printWidth": 130,
+  "singleQuote": true,
+  "semi": false,
+  "arrowParens": "avoid",
+  "overrides": []
+}
