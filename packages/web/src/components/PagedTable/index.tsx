@@ -11,10 +11,11 @@ export type PagedTableProps<T, V, F> = {
   pageSizes: number[]
   onPagedDataRequested: (opts: TablePagingOptions<F>) => Promise<PagedData<T>>
   onPagingOptionsChange: (opts: TablePagingOptions<F>) => void
+  onError: (message?: string) => void
 }
 
 export default function PagedTable<T, V, F>(props: PagedTableProps<T, V, F>) {
-  const { pageSizes, pagingOptions, onPagedDataRequested, onPagingOptionsChange } = props
+  const { pageSizes, pagingOptions, onPagedDataRequested, onPagingOptionsChange, onError } = props
   const [sorting, setSorting] = useState<SortingState>([])
   const [pagedData, setPagedData] = useState<PagedData<T>>({
     total: 0,
@@ -48,11 +49,14 @@ export default function PagedTable<T, V, F>(props: PagedTableProps<T, V, F>) {
   useEffect(() => {
     onPagedDataRequested(pagingOptions)
       .then(setPagedData)
-      .catch(err => console.log(err))
+      .catch(err => {
+        onError(err.message)
+        console.error(err.message)
+      })
   }, [pagingOptions])
 
   return (
-    <div className="flex flex-col h-screen max-w-4xl mx-auto py-5">
+    <div className="flex flex-col max-w-4xl mx-auto py-5">
       <table className="border">
         <thead>
           {table.getHeaderGroups().map(headerGroup => (

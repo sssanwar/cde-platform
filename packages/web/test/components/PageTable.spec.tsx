@@ -42,6 +42,7 @@ const renderTable = (opts: DataPagingOptions, onPagingOptionsChange: (opts: Data
       pagingOptions={opts}
       onPagedDataRequested={getPageData}
       onPagingOptionsChange={onPagingOptionsChange}
+      onError={message => message && console.log(message)}
     />,
   )
 }

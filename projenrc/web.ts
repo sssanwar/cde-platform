@@ -29,9 +29,6 @@ export const configureWeb = (project: TypeScriptProject) => {
 
   project.tsconfig?.addInclude('src/**/*.tsx')
   project.tsconfig?.addInclude('test/**/*.tsx')
-
-  project.tsconfigDev.addInclude('src/**/*.tsx')
-  project.tsconfigDev.addInclude('test/**/*.tsx')
   project.tsconfigDev.addInclude('vite.config.ts')
 
   Object.assign(project.tsconfigDev.compilerOptions ?? {}, compilerOptions)
