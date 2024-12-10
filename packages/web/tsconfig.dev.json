@@ -43,8 +43,6 @@
   "include": [
     "src/**/*.ts",
     "test/**/*.ts",
-    "src/**/*.tsx",
-    "test/**/*.tsx",
     "vite.config.ts"
   ],
   "exclude": [

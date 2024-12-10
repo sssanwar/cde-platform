@@ -6,14 +6,20 @@ import userEvent from '@testing-library/user-event'
 import { Provider } from 'react-redux'
 import AppContainer from '../src/App.container'
 import store from '../src/store'
+import { CustomerPagingOptions } from '@cde-platform/api/lib/model/paging'
 
 describe('App.container', () => {
-  const getPagedData = Paginator(customers)
+  let errorMessage = ''
+  const paginator = Paginator(customers)
+
+  const getPagedData = (opts: CustomerPagingOptions) => {
+    return errorMessage ? Promise.reject(new Error(errorMessage)) : Promise.resolve(paginator(opts))
+  }
 
   const renderApp = () => {
     return render(
       <Provider store={store}>
-        <AppContainer onPagedDataRequested={opts => Promise.resolve(getPagedData(opts))} />
+        <AppContainer onPagedDataRequested={getPagedData} />
       </Provider>,
     )
   }
@@ -25,8 +31,18 @@ describe('App.container', () => {
     expect(tbody.children.length).toBe(5)
 
     const combo = await result.findByRole('combobox')
-
     await userEvent.selectOptions(combo, '10')
     expect(tbody.children.length).toBe(10)
+  })
+
+  it('renders error message ', async () => {
+    errorMessage = 'Random error'
+    const result = renderApp()
+    const alert = await result.findByRole('alert')
+    expect(alert).toHaveTextContent('Random error')
+  })
+
+  afterEach(() => {
+    errorMessage = ''
   })
 })
