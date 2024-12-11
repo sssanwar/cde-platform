@@ -1,37 +1,40 @@
 import { Customer } from '@cde-platform/api/lib/model/customer'
 import { CustomerPagingOptions } from '@cde-platform/api/lib/model/paging'
 import { createColumnHelper } from '@tanstack/react-table'
-import PagedTable, { PagedData } from './components/PagedTable'
+import PagedTable from './components/PagedTable'
+import { useMemo } from 'react'
+import { PagingResult } from '@cde-platform/api/lib/utils/paginator'
 
 export type AppProps = {
   pagingOptions: CustomerPagingOptions
   errorMessage?: string
   onPagingOptionsSet: (opts: CustomerPagingOptions) => void
-  onPagedDataRequested: (opts: CustomerPagingOptions) => Promise<PagedData<Customer>>
+  onPagedDataRequested: (opts: CustomerPagingOptions) => Promise<PagingResult<Customer>>
   onError: (message?: string) => void
 }
 
 export function App({ pagingOptions, errorMessage, onPagingOptionsSet, onPagedDataRequested, onError }: AppProps) {
-  const columnHelper = createColumnHelper<Customer>()
-
-  const columns = [
-    columnHelper.accessor('id', {
-      header: () => 'ID',
-      cell: ctx => ctx.getValue(),
-    }),
-    columnHelper.accessor('name', {
-      header: () => 'Full Name',
-      cell: ctx => ctx.getValue(),
-    }),
-    columnHelper.accessor('email', {
-      header: () => 'Email',
-      cell: ctx => <i>{ctx.getValue()}</i>,
-    }),
-    columnHelper.accessor('registered', {
-      header: () => 'Registration Date',
-      cell: ctx => new Date(ctx.getValue()).toDateString(),
-    }),
-  ]
+  const columns = useMemo(() => {
+    const columnHelper = createColumnHelper<Customer>()
+    return [
+      columnHelper.accessor('id', {
+        header: () => 'ID',
+        cell: ctx => ctx.getValue(),
+      }),
+      columnHelper.accessor('name', {
+        header: () => 'Full Name',
+        cell: ctx => ctx.getValue(),
+      }),
+      columnHelper.accessor('email', {
+        header: () => 'Email',
+        cell: ctx => <i>{ctx.getValue()}</i>,
+      }),
+      columnHelper.accessor('registered', {
+        header: () => 'Registration Date',
+        cell: ctx => new Date(ctx.getValue()).toDateString(),
+      }),
+    ]
+  }, [])
 
   return (
     <div className="bg-white h-screen pt-10">
