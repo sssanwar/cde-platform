@@ -1,15 +1,15 @@
 import { PagingOptions } from '@cde-platform/api/lib/model/paging'
+import { PagingResult } from '@cde-platform/api/lib/utils/paginator'
 import { flexRender, getCoreRowModel, useReactTable, getSortedRowModel, SortingState, ColumnDef } from '@tanstack/react-table'
 import { useState, useEffect } from 'react'
 
 export type TablePagingOptions<F> = PagingOptions & { field: F }
-export type PagedData<T> = { total: number; page: number; data: T[] }
 
 export type PagedTableProps<T, V, F> = {
   columns: ColumnDef<T, V>[]
   pagingOptions: TablePagingOptions<F>
   pageSizes: number[]
-  onPagedDataRequested: (opts: TablePagingOptions<F>) => Promise<PagedData<T>>
+  onPagedDataRequested: (opts: TablePagingOptions<F>) => Promise<PagingResult<T>>
   onPagingOptionsChange: (opts: TablePagingOptions<F>) => void
   onError: (message?: string) => void
 }
@@ -17,7 +17,7 @@ export type PagedTableProps<T, V, F> = {
 export default function PagedTable<T, V, F>(props: PagedTableProps<T, V, F>) {
   const { pageSizes, pagingOptions, onPagedDataRequested, onPagingOptionsChange, onError } = props
   const [sorting, setSorting] = useState<SortingState>([])
-  const [pagedData, setPagedData] = useState<PagedData<T>>({
+  const [pagedData, setPagedData] = useState<PagingResult<T>>({
     total: 0,
     page: 1,
     data: [],
